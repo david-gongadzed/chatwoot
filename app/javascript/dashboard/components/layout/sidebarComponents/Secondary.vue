@@ -104,6 +104,7 @@ export default {
           .map(inbox => ({
             id: inbox.id,
             label: inbox.name,
+            avatar_url: inbox.avatar_url,
             truncateLabel: true,
             toState: frontendURL(
               `accounts/${this.accountId}/inbox/${inbox.id}`

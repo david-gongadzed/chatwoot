@@ -1,6 +1,7 @@
 module FileTypeHelper
   # NOTE: video, audio, image, etc are filetypes previewable in frontend
   def file_type(content_type)
+    return :location if content_type&.include?('location')
     return :image if image_file?(content_type)
     return :video if video_file?(content_type)
     return :audio if content_type&.include?('audio/')

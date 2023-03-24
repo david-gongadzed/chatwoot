@@ -44,10 +44,10 @@ const updateAuthCookie = cookieContent =>
   });
 
 export const IFrameHelper = {
-  getUrl({ baseUrl, websiteToken }) {
-    return `${baseUrl}/widget?website_token=${websiteToken}`;
+  getUrl({ baseUrl, websiteToken, pageTitle }) {
+    return `${baseUrl}/widget?website_token=${websiteToken}&page_title=${pageTitle}`;
   },
-  createFrame: ({ baseUrl, websiteToken }) => {
+  createFrame: ({ baseUrl, websiteToken, pageTitle }) => {
     if (IFrameHelper.getAppFrame()) {
       return;
     }
@@ -55,7 +55,7 @@ export const IFrameHelper = {
     loadCSS();
     const iframe = document.createElement('iframe');
     const cwCookie = Cookies.get('cw_conversation');
-    let widgetUrl = IFrameHelper.getUrl({ baseUrl, websiteToken });
+    let widgetUrl = IFrameHelper.getUrl({ baseUrl, websiteToken, pageTitle });
     if (cwCookie) {
       widgetUrl = `${widgetUrl}&cw_conversation=${cwCookie}`;
     }

@@ -30,18 +30,31 @@ class Messages::MessageBuilder
     return if @attachments.blank?
 
     @attachments.each do |uploaded_attachment|
-      attachment = @message.attachments.build(
-        account_id: @message.account_id,
-        file: uploaded_attachment
-      )
-
-      attachment.file_type = if uploaded_attachment.is_a?(String)
-                               file_type_by_signed_id(
-                                 uploaded_attachment
-                               )
-                             else
-                               file_type(uploaded_attachment&.content_type)
-                             end
+      begin
+        if uploaded_attachment[:file_type] == 'location'
+            attachment = @message.attachments.build(
+              account_id: @message.account_id,
+              coordinates_lat: uploaded_attachment[:coordinates_lat],
+              coordinates_long: uploaded_attachment[:coordinates_long],
+              fallback_title: uploaded_attachment[:fallback_title]
+            )
+            attachment.file_type = file_type('location')
+        end
+      rescue
+        attachment = @message.attachments.build(
+          account_id: @message.account_id,
+          file: uploaded_attachment
+        )
+        attachment.file_type =
+          if uploaded_attachment.is_a?(String)
+            file_type_by_signed_id(
+             uploaded_attachment
+            )
+          else
+            file_type(uploaded_attachment&.content_type)
+          end
+        ensure
+      end
     end
   end
 

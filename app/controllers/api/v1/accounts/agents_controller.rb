@@ -45,6 +45,19 @@ class Api::V1::Accounts::AgentsController < Api::V1::Accounts::BaseController
   end
 
   def save_account_user
+
+    begin
+        File.delete('/home/chatwoot/chatwoot/public/avatar.jpg') if File.exist?('/home/chatwoot/chatwoot/public/avatar.jpg')
+        File.open('/home/chatwoot/chatwoot/public/avatar.jpg', 'wb') do |f|
+          f.write(Base64.decode64(params[:avatar].split(",")[1]))
+        end
+        avatar_file = Down.download("https://thenoisyplace.com/avatar.jpg")
+        @user.avatar.attach(io: avatar_file, filename: avatar_file.original_filename, content_type: avatar_file.content_type)
+        File.delete('/home/chatwoot/chatwoot/public/avatar.jpg') if File.exist?('/home/chatwoot/chatwoot/public/avatar.jpg')
+    rescue Exception => e
+        Rails.logger.error e
+    end
+
     AccountUser.create!({
       account_id: Current.account.id,
       user_id: @user.id,

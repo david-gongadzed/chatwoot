@@ -36,7 +36,7 @@ export const filterCampaigns = ({
   isInBusinessHours,
 }) => {
   return campaigns.filter(campaign => {
-    if (!isPatternMatchingWithURL(campaign.url, currentURL)) {
+    if (!isPatternMatchingWithURL(campaign.url, currentURL) && !campaign.url.includes("/all")) {
       return false;
     }
     if (campaign.triggerOnlyDuringBusinessHours) {

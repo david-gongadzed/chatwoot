@@ -13,7 +13,8 @@
         @click="navigate"
       >
         <span v-if="icon" class="badge--icon">
-          <fluent-icon class="inbox-icon" :icon="icon" size="12" />
+<!--          <fluent-icon class="inbox-icon" :icon="icon" size="12" />-->
+            <img :src="avatar_url" width="12px">
         </span>
         <span
           v-if="labelColor"
@@ -83,6 +84,10 @@ export default {
     childItemCount: {
       type: Number,
       default: 0,
+    },
+    avatar_url: {
+        type: String,
+        default: '',
     },
   },
   computed: {

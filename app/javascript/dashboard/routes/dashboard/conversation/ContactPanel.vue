@@ -109,6 +109,19 @@
                 :conversation-id="conversationId"
               />
             </accordion-item>
+
+            <accordion-item
+              title="Private Notes"
+              :is-open="isContactSidebarItemOpen('pvnote')"
+              @click="
+              value => toggleSidebarUIState('pvnote', value)
+            ">
+
+              <private-notes
+                      :contact-id="contact.id"
+                      :conversation-id="conversationId"
+              />
+              </accordion-item>
           </div>
           <woot-feature-toggle
             v-else-if="element.name === 'macros'"
@@ -134,6 +147,7 @@ import { mapGetters } from 'vuex';
 import alertMixin from 'shared/mixins/alertMixin';
 import AccordionItem from 'dashboard/components/Accordion/AccordionItem';
 import ContactConversations from './ContactConversations.vue';
+import PrivateNotes from './PrivateNotes.vue';
 import ConversationAction from './ConversationAction.vue';
 import ConversationParticipant from './ConversationParticipant.vue';
 
@@ -149,6 +163,7 @@ export default {
   components: {
     AccordionItem,
     ContactConversations,
+    PrivateNotes,
     ContactInfo,
     ConversationInfo,
     CustomAttributes,
@@ -194,6 +209,11 @@ export default {
     },
     contact() {
       return this.$store.getters['contacts/getContact'](this.contactId);
+    },
+    conversations() {
+       return this.$store.getters['contactConversations/getContactConversation'](
+           this.contactId
+       );
     },
     contactAdditionalAttributes() {
       return this.contact.additional_attributes || {};
@@ -292,6 +312,15 @@ export default {
       }
     }
   }
+}
+
+.close-button {
+  position: absolute;
+  right: $space-two;
+  top: $space-slab;
+  font-size: $font-size-default;
+  color: $color-heading;
+  z-index: 9989;
 }
 
 .conversation--labels {

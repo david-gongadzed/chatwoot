@@ -81,6 +81,10 @@ class MessageApi extends ApiClient {
     });
   }
 
+  getPrivateNotes({ conversationId }) {
+    return axios.get(`${this.url}/${conversationId}/notes`);
+  }
+
   translateMessage(conversationId, messageId, targetLanguage) {
     return axios.post(
       `${this.url}/${conversationId}/messages/${messageId}/translate`,

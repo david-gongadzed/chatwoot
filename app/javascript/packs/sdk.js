@@ -12,7 +12,7 @@ import {
 } from '../sdk/cookieHelpers';
 import { addClasses, removeClasses } from '../sdk/DOMHelpers';
 import { SDK_SET_BUBBLE_VISIBILITY } from 'shared/constants/sharedFrameEvents';
-const runSDK = ({ baseUrl, websiteToken }) => {
+const runSDK = ({ baseUrl, websiteToken, pageTitle }) => {
   if (window.$chatwoot) {
     return;
   }
@@ -31,9 +31,11 @@ const runSDK = ({ baseUrl, websiteToken }) => {
     isOpen: false,
     position: chatwootSettings.position === 'left' ? 'left' : 'right',
     websiteToken,
+    pageTitle: chatwootSettings.pageTitle,
     locale,
     useBrowserLanguage: chatwootSettings.useBrowserLanguage || false,
     type: getBubbleView(chatwootSettings.type),
+    mobile: chatwootSettings.mobile?chatwootSettings.mobile:'button',
     launcherTitle: chatwootSettings.launcherTitle || '',
     showPopoutButton: chatwootSettings.showPopoutButton || false,
     widgetStyle: getWidgetStyle(chatwootSettings.widgetStyle) || 'standard',
@@ -65,6 +67,7 @@ const runSDK = ({ baseUrl, websiteToken }) => {
       IFrameHelper.events.popoutChatWindow({
         baseUrl: window.$chatwoot.baseUrl,
         websiteToken: window.$chatwoot.websiteToken,
+        pageTitle: window.$chatwoot.pageTitle,
         locale,
       });
     },
@@ -138,6 +141,7 @@ const runSDK = ({ baseUrl, websiteToken }) => {
       iframe.src = IFrameHelper.getUrl({
         baseUrl: window.$chatwoot.baseUrl,
         websiteToken: window.$chatwoot.websiteToken,
+        pageTitle: window.$chatwoot.pageTitle,
       });
 
       window.$chatwoot.resetTriggered = true;
@@ -147,6 +151,7 @@ const runSDK = ({ baseUrl, websiteToken }) => {
   IFrameHelper.createFrame({
     baseUrl,
     websiteToken,
+    pageTitle,
   });
 };
 

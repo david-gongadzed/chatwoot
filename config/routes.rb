@@ -80,6 +80,7 @@ Rails.application.routes.draw do
                   post :translate
                 end
               end
+              resources :notes, only: [:index, :create, :destroy]
               resources :assignments, only: [:create]
               resources :labels, only: [:create, :index]
               resource :participants, only: [:show, :create, :update, :destroy]

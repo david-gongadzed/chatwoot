@@ -97,6 +97,16 @@
               :items="widgetBubbleTypes"
               :action="handleWidgetBubbleTypeChange"
             />
+            <input-radio-group
+              name="widget-mobile"
+              :label="
+                $t(
+                  'Widget Mobile'
+                )
+              "
+              :items="widgetMobiles"
+              :action="handleWidgetMobileChange"
+            />
             <woot-input
               v-model.trim="widgetBubbleLauncherTitle"
               :label="
@@ -142,6 +152,7 @@
             :widget-bubble-position="widgetBubblePosition"
             :widget-bubble-launcher-title="widgetBubbleLauncherTitle"
             :widget-bubble-type="widgetBubbleType"
+            :widget-mobile="widgetMobile"
           />
         </div>
         <div v-else class="widget-script">
@@ -190,6 +201,7 @@ export default {
         'INBOX_MGMT.WIDGET_BUILDER.WIDGET_OPTIONS.WIDGET_BUBBLE_LAUNCHER_TITLE.DEFAULT'
       ),
       widgetBubbleType: 'standard',
+      widgetMobile: 'button',
       widgetBubblePositions: [
         {
           id: 'left',
@@ -222,6 +234,22 @@ export default {
           checked: false,
         },
       ],
+      widgetMobiles: [
+        {
+          id: 'button',
+          title: this.$t(
+            'Button'
+          ),
+          checked: true,
+        },
+        {
+          id: 'bar',
+          title: this.$t(
+            'Bar'
+          ),
+          checked: false,
+        },
+      ],
     };
   },
   computed: {
@@ -235,6 +263,7 @@ export default {
       let options = {
         position: this.widgetBubblePosition,
         type: this.widgetBubbleType,
+        mobile: this.widgetMobile,
         launcherTitle: this.widgetBubbleLauncherTitle,
       };
       let script = this.inbox.web_widget_script;
@@ -335,6 +364,13 @@ export default {
           }
           return item;
         });
+        this.widgetMobiles = this.widgetMobiles.map(item => {
+            if (item.id === savedInformation.mobile) {
+                item.checked = true;
+                this.widgetMobile = item.id;
+            }
+            return item;
+        });
         this.widgetBubbleLauncherTitle =
           savedInformation.launcherTitle || 'Chat with us';
       }
@@ -344,6 +380,9 @@ export default {
     },
     handleWidgetBubbleTypeChange(item) {
       this.widgetBubbleType = item.id;
+    },
+    handleWidgetMobileChange(item) {
+      this.widgetMobile = item.id;
     },
     handleWidgetViewChange(item) {
       this.isWidgetPreview = item.id === 'preview';
@@ -377,6 +416,7 @@ export default {
         position: this.widgetBubblePosition,
         launcherTitle: this.widgetBubbleLauncherTitle,
         type: this.widgetBubbleType,
+        mobile: this.widgetMobile,
       };
 
       LocalStorage.set(this.storageKey, bubbleSettings);

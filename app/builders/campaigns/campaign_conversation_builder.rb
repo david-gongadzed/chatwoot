@@ -23,10 +23,13 @@ class Campaigns::CampaignConversationBuilder
   private
 
   def message_params
+    mechanize = Mechanize.new
+    page = mechanize.get(conversation_additional_attributes[:referer])
+    msg = @campaign.message.gsub("{{page-name}}",page.title.split("|")[0])
     ActionController::Parameters.new({
-                                       content: @campaign.message,
-                                       campaign_id: @campaign.id
-                                     })
+      content: msg,
+      campaign_id: @campaign.id
+    })
   end
 
   def conversation_params
