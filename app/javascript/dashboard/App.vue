@@ -127,7 +127,9 @@ export default {
     display:none;
 }
 
-.agent .context-menu-container .menu {
+.agent .context-menu-container .menu:nth-child(1),
+.agent .context-menu-container .menu:nth-child(2),
+.agent .context-menu-container .menu:nth-child(3) {
     display:none;
 }
 
