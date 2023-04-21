@@ -132,9 +132,13 @@ export default {
 }
 
 
+.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(1),
+.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(2),
 .agent .context-menu-container .menu-container .menu-with-submenu:nth-child(3),
-.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(5),
-.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(6)
+.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(4),
+.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(6),
+.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(7),
+.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(8)
 {
     display:none;
 }
