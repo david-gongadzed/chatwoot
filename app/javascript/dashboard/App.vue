@@ -3,7 +3,7 @@
     v-if="!authUIFlags.isFetching"
     id="app"
     class="app-wrapper app-root"
-    :class="{ 'app-rtl--wrapper': isRTLView }"
+    :class="{ 'app-rtl--wrapper': isRTLView, 'agent': currentUser.role != 'administrator', 'admin': currentUser.role == 'administrator' }"
   >
     <update-banner :latest-chatwoot-version="latestChatwootVersion" />
     <transition name="fade" mode="out-in">
@@ -122,3 +122,20 @@ export default {
 </style>
 
 <style src="vue-multiselect/dist/vue-multiselect.min.css"></style>
+<style>
+.agent .tab--chat-type.tabs--container--with-border.tabs--container .tabs-title:not(.is-active) {
+    display:none;
+}
+
+.agent .context-menu-container .menu {
+    display:none;
+}
+
+
+.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(3),
+.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(5),
+.agent .context-menu-container .menu-container .menu-with-submenu:nth-child(6)
+{
+    display:none;
+}
+</style>
