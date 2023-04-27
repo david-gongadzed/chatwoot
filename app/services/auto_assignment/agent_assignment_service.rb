@@ -10,7 +10,10 @@ class AutoAssignment::AgentAssignmentService
 
   def perform
     new_assignee = find_assignee
-    conversation.update(assignee: new_assignee) if new_assignee
+    # don't change assignee if conversation is assigned to operation team (David)
+    if conversation.team_id != 16
+      conversation.update(assignee: new_assignee) if new_assignee
+    end
   end
 
   private
