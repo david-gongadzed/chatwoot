@@ -145,4 +145,12 @@ export default {
 {
     display:none;
 }
+
+.agent .conversation-header--details .header-actions-wrap .flex-container.actions--container {
+    display:none !important;
+}
+
+.agent .conversation--actions {
+    display:none !important;
+}
 </style>
