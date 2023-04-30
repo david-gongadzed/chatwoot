@@ -44,6 +44,14 @@ class ActionService
     return unassign_team if team_ids[0].zero?
     return unless team_belongs_to_account?(team_ids)
 
+    team = Team.find_by(id: team_ids[0])
+    team_members_with_capacity = @conversation.inbox.member_ids_with_assignment_capacity & team.members.ids
+    new_assignee = ::AutoAssignment::AgentAssignmentService.new(conversation: @conversation, allowed_agent_ids: team_members_with_capacity).find_assignee
+    # don't change assignee if conversation is assigned to operation team (David)
+    if conversation.team_id != 16
+      @conversation.update(assignee: new_assignee) if new_assignee
+    end
+
     @conversation.update!(team_id: team_ids[0])
   end
 
