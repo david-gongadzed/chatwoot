@@ -9,6 +9,10 @@ class AutoAssignment::AgentAssignmentService
   end
 
   def perform
+    if allowed_online_agent_ids.length() == 2
+      new_assignee = find_assignee
+    end
+
     new_assignee = find_assignee
     # don't change assignee if conversation is assigned to operation team (David)
     if conversation.team_id != 16
