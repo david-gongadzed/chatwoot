@@ -168,4 +168,11 @@ export default {
     right:-16px;
     left:auto !important;
 }
+.bubble.is-text.is-deleted {
+    background:#ff511e
+}
+
+.is-deleted .delete-icon {
+    display:block !important;
+}
 </style>
