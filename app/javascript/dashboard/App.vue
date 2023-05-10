@@ -153,4 +153,19 @@ export default {
 .agent .conversation--actions {
     display:none !important;
 }
+
+.emoji-reaction {
+    position: absolute;
+    top: -4px;
+    left: -16px;
+    background: #ffffff;
+    border: 1px solid #ebf0f5;
+    border-radius: 101px;
+    padding: 3px;
+}
+
+.incoming .emoji-reaction {
+    right:-16px;
+    left:auto !important;
+}
 </style>
