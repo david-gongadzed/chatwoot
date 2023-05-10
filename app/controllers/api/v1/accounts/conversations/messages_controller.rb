@@ -11,6 +11,19 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
     render_could_not_create_error(e.message)
   end
 
+  def update
+    if(params.to_unsafe_hash['status'])
+      message.update(status: params.to_unsafe_hash['status'])
+    else
+      message.update(content_attributes: message.content_attributes.merge(params.to_unsafe_hash['content_attributes']))
+    end
+
+    conversation = message.conversation
+    tokens = user_tokens(account, conversation.inbox.members) + contact_tokens(conversation.contact_inbox, message)
+
+    broadcast(account, tokens, MESSAGE_UPDATED, message.push_event_data)
+  end
+
   def destroy
     ActiveRecord::Base.transaction do
       message.update!(content: I18n.t('conversations.messages.deleted'), content_attributes: { deleted: true })

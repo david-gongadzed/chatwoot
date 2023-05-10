@@ -75,6 +75,18 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
       @contact = Current.account.contacts.new(permitted_params.except(:avatar_url))
       @contact.save!
       @contact_inbox = build_contact_inbox
+
+      if(@contact.phone_number.present?)
+        if(!@contact.custom_attributes["whatsapp"].present?)
+          require 'net/http'
+          result = Net::HTTP.get(URI.parse('http://95.179.151.239/check/'+@contact.phone_number))
+
+          if(result == "1")
+            @contact.update(custom_attributes: @contact.custom_attributes.merge({"whatsapp": "1"}))
+          end
+        end
+      end
+
       process_avatar
     end
   end
@@ -82,6 +94,18 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
   def update
     @contact.assign_attributes(contact_update_params)
     @contact.save!
+
+    if(@contact.phone_number.present?)
+      require 'net/http'
+      result = Net::HTTP.get(URI.parse('http://95.179.151.239/check/'+@contact.phone_number))
+
+      if(result == "1")
+        @contact.update(custom_attributes: @contact.custom_attributes.merge({"whatsapp": "1"}))
+      else
+        @contact.update(custom_attributes: @contact.custom_attributes.merge({"whatsapp": "0"}))
+      end
+    end
+
     process_avatar if permitted_params[:avatar].present? || permitted_params[:avatar_url].present?
   end
 
@@ -167,6 +191,18 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
 
   def fetch_contact
     @contact = Current.account.contacts.includes(contact_inboxes: [:inbox]).find(params[:id])
+
+    if(@contact.phone_number)
+      if(!@contact.custom_attributes["whatsapp"].present?)
+        require 'net/http'
+        result = Net::HTTP.get(URI.parse('http://95.179.151.239/check/'+@contact.phone_number))
+
+        if(result == "1")
+          @contact.update(custom_attributes: @contact.custom_attributes.merge({"whatsapp": "1"}))
+        end
+      end
+    end
+
   end
 
   def process_avatar

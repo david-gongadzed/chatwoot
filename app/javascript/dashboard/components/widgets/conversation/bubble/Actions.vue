@@ -9,6 +9,13 @@
     >
       {{ readableTime }}
     </span>
+      <span class="read-indicator-wrap delete-icon" style="display: none">
+      <fluent-icon
+              icon="delete"
+              class="action--icon"
+              size="14"
+      />
+    </span>
     <span v-if="externalError" class="read-indicator-wrap">
       <fluent-icon
         v-tooltip.top-start="externalError"
@@ -215,6 +222,11 @@ export default {
       if (this.isAWhatsAppChannel) {
         return this.sourceId && this.isSent;
       }
+
+      if (this.channelType == "Channel::Api") {
+          return this.isSent;
+      }
+
       return false;
     },
     showDeliveredIndicator() {
@@ -224,6 +236,10 @@ export default {
 
       if (this.isAWhatsAppChannel) {
         return this.sourceId && this.isDelivered;
+      }
+
+      if (this.channelType == "Channel::Api") {
+        return this.isDelivered;
       }
 
       return false;
@@ -240,6 +256,10 @@ export default {
 
       if (this.isAWhatsAppChannel) {
         return this.sourceId && this.isRead;
+      }
+
+      if (this.channelType == "Channel::Api") {
+          return this.isRead;
       }
 
       return false;

@@ -18,6 +18,7 @@
           >
             <h3 class="sub-block-title user--name text-truncate">
               <span>{{ currentContact.name }}</span>
+              <span style="position: relative; top:3px" v-if="currentContact.custom_attributes.whatsapp == 1"><fluent-icon color="#25D366" class="icon icon--font" size="18" icon="whatsapp" /></span>
               <fluent-icon
                 v-if="!isHMACVerified"
                 v-tooltip="$t('CONVERSATION.UNVERIFIED_SESSION')"

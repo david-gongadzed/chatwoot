@@ -22,6 +22,9 @@
           :bcc="emailHeadAttributes.bcc"
           :is-incoming="isIncoming"
         />
+        <div class="emoji-reaction">
+            {{this.contentAttributes.test}}
+        </div>
         <bubble-text
           v-if="data.content"
           :message="message"
@@ -378,6 +381,8 @@ export default {
         'is-from-bot': this.isSentByBot,
         'is-failed': this.isFailed,
         'is-email': this.isEmailContentType,
+        'incoming': this.isIncoming,
+        'is-deleted': this.contentAttributes.deleted,
       };
     },
     isPending() {
