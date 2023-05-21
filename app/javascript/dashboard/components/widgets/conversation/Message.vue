@@ -25,6 +25,14 @@
         <div class="emoji-reaction">
             {{this.contentAttributes.test}}
         </div>
+        <blockquote v-if="storyReply" class="story-reply-quote">
+          <span>{{ $t('CONVERSATION.REPLIED_TO_STORY') }}</span>
+          <bubble-image
+            v-if="!hasStoryError"
+            :url="storyUrl"
+            @error="onStoryLoadError"
+          />
+        </blockquote>
         <bubble-text
           v-if="data.content"
           :message="message"
@@ -54,7 +62,7 @@
               controls
               class="skip-context-menu"
             >
-              <source :src="attachment.data_url" />
+              <source :src="`${attachment.data_url}?t=${Date.now()}`" />
             </audio>
             <bubble-video
               v-else-if="attachment.file_type === 'video'"
@@ -82,7 +90,7 @@
           :sender="data.sender"
           :story-sender="storySender"
           :external-error="externalError"
-          :story-id="storyId"
+          :story-id="`${storyId}`"
           :is-a-tweet="isATweet"
           :is-a-whatsapp-channel="isAWhatsAppChannel"
           :has-instagram-story="hasInstagramStory"
@@ -195,6 +203,7 @@ export default {
       hasImageError: false,
       contextMenuPosition: {},
       showBackgroundHighlight: false,
+      hasStoryError: false,
     };
   },
   computed: {
@@ -279,6 +288,12 @@ export default {
     },
     storyId() {
       return this.contentAttributes.story_id || null;
+    },
+    storyUrl() {
+      return this.contentAttributes.story_url || null;
+    },
+    storyReply() {
+      return this.storyUrl && this.hasInstagramStory;
     },
     contentType() {
       const {
@@ -419,10 +434,12 @@ export default {
   watch: {
     data() {
       this.hasImageError = false;
+      this.hasStoryError = false;
     },
   },
   mounted() {
     this.hasImageError = false;
+    this.hasStoryError = false;
     bus.$on(BUS_EVENTS.ON_MESSAGE_LIST_SCROLL, this.closeContextMenu);
     this.setupHighlightTimer();
   },
@@ -437,6 +454,9 @@ export default {
         const { file_type: fileType } = attachments[0];
         return fileType === type && !this.hasImageError;
       }
+      if (this.storyReply) {
+        return true;
+      }
       return false;
     },
     handleContextMenuClick() {
@@ -447,6 +467,9 @@ export default {
     },
     onImageLoadError() {
       this.hasImageError = true;
+    },
+    onStoryLoadError() {
+      this.hasStoryError = true;
     },
     openContextMenu(e) {
       const shouldSkipContextMenu =
@@ -677,7 +700,6 @@ li.right {
   blockquote {
     border-left: var(--space-micro) solid var(--s-75);
     color: var(--s-800);
-    padding: var(--space-smaller) var(--space-small);
     margin: var(--space-smaller) 0;
     padding: var(--space-small) var(--space-small) 0 var(--space-normal);
   }
@@ -708,5 +730,12 @@ li.right {
       color: var(--w-75);
     }
   }
+}
+
+.story-reply-quote {
+  border-left: var(--space-micro) solid var(--s-75);
+  color: var(--s-600);
+  margin: var(--space-small) var(--space-normal) 0;
+  padding: var(--space-small) var(--space-small) 0 var(--space-small);
 }
 </style>
