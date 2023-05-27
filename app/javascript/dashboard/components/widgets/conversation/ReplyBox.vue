@@ -6,11 +6,11 @@
             <span id="reply-chat" style="min-height: 40px;overflow: hidden;display: flex;align-items: center;">{{this.chat.content.substring(0,150)}}</span>
             <span id="cancel-reply">
                <woot-button
-                       icon="dismiss"
-                       size="tiny"
-                       color-scheme="secondary"
-                       variant="clear"
-                       @click="dismissReply"
+                 icon="dismiss"
+                 size="tiny"
+                 color-scheme="secondary"
+                 variant="clear"
+                 @click="dismissReply"
                />
             </span>
         </div>
