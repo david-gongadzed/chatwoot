@@ -128,8 +128,8 @@
         </a>
       </div>
     </div>
-    <div>
-        <woot-button v-if="!isMessageDeleted"
+    <div class="reply-button">
+        <woot-button v-if="!isMessageDeleted && isBubble && !isPrivate"
            variant="clear"
            icon="arrow-reply"
            size="medium"
@@ -341,6 +341,9 @@ export default {
     },
     isBubble() {
       return [0, 1, 3].includes(this.data.message_type);
+    },
+    isPrivate() {
+        return (this.data.private);
     },
     isIncoming() {
       return this.data.message_type === MESSAGE_TYPE.INCOMING;
