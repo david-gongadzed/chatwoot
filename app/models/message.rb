@@ -70,7 +70,7 @@ class Message < ApplicationRecord
   validates :content, length: { maximum: 150_000 }
 
   # when you have a temperory id in your frontend and want it echoed back via action cable
-  attr_accessor :echo_id
+  attr_accessor :echo_id, :replied_message
 
   enum message_type: { incoming: 0, outgoing: 1, activity: 2, template: 3 }
   enum content_type: {
@@ -143,10 +143,17 @@ class Message < ApplicationRecord
       }
     )
     data.merge!(echo_id: echo_id) if echo_id.present?
+    data.merge!(replied_message: replied_message) if replied_message.present?
     data.merge!(attachments: attachments.map(&:push_event_data)) if attachments.present?
     merge_sender_attributes(data)
   end
 
+  def replied_message
+    if(content_attributes[:in_reply_to])
+      return Message.find(content_attributes[:in_reply_to])
+    end
+    return "";
+  end
   # TODO: We will be removing this code after instagram_manage_insights is implemented
   # Better logic is to listen to webhook and remove stories proactively rather than trying
   # a fetch every time a message is returned

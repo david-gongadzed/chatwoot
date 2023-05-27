@@ -1,5 +1,19 @@
 <template>
   <div class="reply-box" :class="replyBoxClass">
+      <div v-if="this.chat" style="background: #dceaf5;padding: 7px;">
+        <div v-if="this.chat" style="width: 100%;min-height: 55px;background: #f7f7f7;display: flex;justify-content: space-between;font-size: 13px;align-items: center;    border-radius: 10px;padding: 15px;">
+            <span id="reply-chat" style="min-height: 40px;overflow: hidden;display: flex;align-items: center;">{{this.chat.content.substring(0,150)}}</span>
+            <span id="cancel-reply">
+               <woot-button
+                       icon="dismiss"
+                       size="tiny"
+                       color-scheme="secondary"
+                       variant="clear"
+                       @click="dismissReply"
+               />
+            </span>
+        </div>
+      </div>
     <banner
       v-if="showSelfAssignBanner"
       color-scheme="secondary"
@@ -209,6 +223,9 @@ export default {
     rtlMixin,
   ],
   props: {
+    chat: {
+        type: Object,
+    },
     selectedTweet: {
       type: [Object, String],
       default: () => ({}),
@@ -689,6 +706,9 @@ export default {
     hideWhatsappTemplatesModal() {
       this.showWhatsAppTemplatesModal = false;
     },
+    dismissReply() {
+        this.chat = null;
+    },
     onClickSelfAssign() {
       const {
         account_id,
@@ -730,6 +750,8 @@ export default {
           this.sendMessageAsMultipleMessages(newMessage);
         } else {
           const messagePayload = this.getMessagePayload(newMessage);
+
+          this.currentChat.reply_message = null;
           this.sendMessage(messagePayload);
         }
 
@@ -1032,6 +1054,10 @@ export default {
 
       if (this.inReplyTo) {
         messagePayload.contentAttributes = { in_reply_to: this.inReplyTo };
+      }
+
+      if(this.chat) {
+          messagePayload.contentAttributes = { in_reply_to: this.chat.id };
       }
 
       if (this.attachedFiles && this.attachedFiles.length) {

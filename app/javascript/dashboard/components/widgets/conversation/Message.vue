@@ -16,6 +16,9 @@
         :class="bubbleClass"
         @contextmenu="openContextMenu($event)"
       >
+          <div v-if="this.data.replied_message" style="width: 100%;min-height: 52px;overflow: hidden;background: #dceaf5;color: black;padding: 8px;border-radius: 10px;margin-bottom: 10px;text-align: left;text-overflow: ellipsis;display: flex;align-items: center;">
+              {{this.data.replied_message.content.substring(0,100)}}
+          </div>
         <bubble-mail-head
           :email-attributes="contentAttributes.email"
           :cc="emailHeadAttributes.cc"
@@ -124,6 +127,14 @@
           {{ sender.name }}
         </a>
       </div>
+      <div>
+          <woot-button v-if="!isMessageDeleted"
+                       variant="clear"
+                       icon="arrow-reply"
+                       size="medium"
+                       @click="replyMessage"
+          />
+      </div>
     </div>
     <div v-if="shouldShowContextMenu" class="context-menu-wrap">
       <context-menu
@@ -176,6 +187,9 @@ export default {
   },
   mixins: [alertMixin, messageFormatterMixin, contentTypeMixin],
   props: {
+    chat: {
+        type: Object,
+    },
     data: {
       type: Object,
       required: true,
@@ -464,6 +478,10 @@ export default {
     },
     async retrySendMessage() {
       await this.$store.dispatch('sendMessageWithData', this.data);
+    },
+    replyMessage() {
+      this.chat.reply_message = this.data;
+
     },
     onImageLoadError() {
       this.hasImageError = true;

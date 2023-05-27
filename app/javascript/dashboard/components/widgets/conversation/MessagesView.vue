@@ -41,6 +41,7 @@
         :is-a-whatsapp-channel="isAWhatsAppChannel"
         :has-instagram-story="hasInstagramStory"
         :is-web-widget-inbox="isAWebWidgetInbox"
+        :chat="currentChat"
       />
       <li v-show="unreadMessageCount != 0" class="unread--toast">
         <span class="text-uppercase">
@@ -82,6 +83,7 @@
         :is-a-tweet="isATweet"
         :selected-tweet="selectedTweet"
         :popout-reply-box.sync="isPopoutReplyBox"
+        :chat="currentChat.reply_message"
         @click="showPopoutReplyBox"
       />
     </div>
