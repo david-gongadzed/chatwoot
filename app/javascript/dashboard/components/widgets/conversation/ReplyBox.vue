@@ -1,5 +1,6 @@
 <template>
   <div class="reply-box" :class="replyBoxClass">
+
       <div v-if="this.chat" style="background: #dceaf5;padding: 7px;">
         <div v-if="this.chat" style="width: 100%;min-height: 55px;background: #f7f7f7;display: flex;justify-content: space-between;font-size: 13px;align-items: center;    border-radius: 10px;padding: 15px;">
             <span id="reply-chat" style="min-height: 40px;overflow: hidden;display: flex;align-items: center;">{{this.chat.content.substring(0,150)}}</span>
@@ -14,6 +15,7 @@
             </span>
         </div>
       </div>
+
     <banner
       v-if="showSelfAssignBanner"
       color-scheme="secondary"
