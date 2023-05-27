@@ -127,14 +127,14 @@
           {{ sender.name }}
         </a>
       </div>
-      <div>
-          <woot-button v-if="!isMessageDeleted"
-                       variant="clear"
-                       icon="arrow-reply"
-                       size="medium"
-                       @click="replyMessage"
-          />
-      </div>
+    </div>
+    <div>
+        <woot-button v-if="!isMessageDeleted"
+           variant="clear"
+           icon="arrow-reply"
+           size="medium"
+           @click="replyMessage"
+        />
     </div>
     <div v-if="shouldShowContextMenu" class="context-menu-wrap">
       <context-menu
