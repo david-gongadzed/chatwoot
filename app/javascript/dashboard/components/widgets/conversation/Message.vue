@@ -17,7 +17,12 @@
         @contextmenu="openContextMenu($event)"
       >
           <div v-if="this.data.replied_message" style="width: 100%;min-height: 52px;overflow: hidden;background: #dceaf5;color: black;padding: 8px;border-radius: 10px;margin-bottom: 10px;text-align: left;text-overflow: ellipsis;display: flex;align-items: center;">
-              {{this.data.replied_message.content.substring(0,100)}}
+              <span v-if="this.data.replied_message.content">
+                  {{this.data.replied_message.content.substring(0,100)}}
+              </span>
+              <span v-if="!this.data.replied_message.content" style="display: flex;align-items: center;">
+                  <fluent-icon icon="document" size="28" />File
+              </span>
           </div>
         <bubble-mail-head
           :email-attributes="contentAttributes.email"
