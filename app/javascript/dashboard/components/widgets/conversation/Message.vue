@@ -16,7 +16,7 @@
         :class="bubbleClass"
         @contextmenu="openContextMenu($event)"
       >
-          <div v-if="this.data.replied_message" style="width: 100%;min-height: 52px;overflow: hidden;background: #dceaf5;color: black;padding: 8px;border-radius: 10px;margin-bottom: 10px;text-align: left;text-overflow: ellipsis;display: flex;align-items: center;">
+          <div @click="goToMessage(data.replied_message.id)" v-if="this.data.replied_message" style="width: 100%;min-height: 52px;overflow: hidden;background: #dceaf5;color: black;padding: 8px;border-radius: 10px;margin-bottom: 10px;text-align: left;text-overflow: ellipsis;display: flex;align-items: center;cursor: pointer">
               <span v-if="this.data.replied_message.content">
                   {{this.data.replied_message.content.substring(0,100)}}
               </span>
@@ -470,6 +470,14 @@ export default {
     clearTimeout(this.higlightTimeout);
   },
   methods: {
+    goToMessage(mid) {
+        this.$parent.fetchPreviousMessages().then(m => {
+            if(document.getElementById('message' + mid))
+                document.getElementById('message' + mid).scrollIntoView({ behavior: 'smooth' })
+            else
+                this.goToMessage(mid);
+        })
+    },
     hasMediaAttachment(type) {
       if (this.hasAttachments && this.data.attachments.length > 0) {
         const { attachments = [{}] } = this.data;

@@ -716,7 +716,7 @@ export default {
       this.showWhatsAppTemplatesModal = false;
     },
     dismissReply() {
-        this.chat = null;
+        this.$parent.currentChat.reply_message = null;
     },
     onClickSelfAssign() {
       const {
