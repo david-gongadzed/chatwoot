@@ -168,11 +168,19 @@ export default {
     right:-16px;
     left:auto !important;
 }
-.bubble.is-text.is-deleted {
-    background:#ff511e
+.bubble.is-deleted {
+    background:#ff511e !important;;
 }
 
 .is-deleted .delete-icon {
     display:block !important;
+}
+
+span.delete-icon {
+    display: block;
+    min-height: 20px;
+}
+.message-text--metadata {
+    padding-top: 4px !important;
 }
 </style>
