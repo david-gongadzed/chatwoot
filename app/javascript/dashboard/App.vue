@@ -162,6 +162,7 @@ export default {
     border: 1px solid #ebf0f5;
     border-radius: 101px;
     padding: 3px;
+    z-index: 1;
 }
 
 .incoming .emoji-reaction {
@@ -182,5 +183,9 @@ span.delete-icon {
 }
 .message-text--metadata {
     padding-top: 4px !important;
+}
+
+.bubble.is-image {
+    overflow: initial !important;
 }
 </style>
