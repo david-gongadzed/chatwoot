@@ -6,7 +6,9 @@
     }"
   >
     <a @click="onTabClick">
-      {{ name }}
+      <span v-if="name != 'Unassigned' && name != 'Mine'">{{ name }}</span>
+      <span v-if="name == 'Unassigned'">New Booking</span>
+      <span v-if="name == 'Mine'">{{$parent.$parent.$parent.currentUser.available_name}}</span>
       <span v-if="showBadge" class="badge">
         {{ getItemCount }}
       </span>
