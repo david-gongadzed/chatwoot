@@ -17,6 +17,10 @@ class ContactPolicy < ApplicationPolicy
 
   def filter?
     true
+    end
+
+  def manage?
+    true
   end
 
   def update?

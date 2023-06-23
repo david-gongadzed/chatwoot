@@ -48,6 +48,45 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
                   .get_available_contact_ids(Current.account.id))
     @contacts_count = contacts.count
     @contacts = contacts.page(@current_page)
+    end
+
+  def manage
+    @contact = Current.account.contacts.new(permitted_params.except(:avatar_url))
+    @contact = Contact.where(phone_number: @contact.phone_number).last
+    if(!@contact)
+      ActiveRecord::Base.transaction do
+        @contact = Current.account.contacts.new(permitted_params.except(:avatar_url))
+        @contact.save!
+        @contact_inbox = build_contact_inbox
+        process_avatar
+      end
+    end
+
+    @conversation_id = 0;
+
+    if (!@contact.conversations.where(inbox_id: params[:inbox_id]).last)
+      @inbox = Current.account.inboxes.find(params[:inbox_id]);
+      @contact_inbox = @contact.contact_inboxes.where(inbox_id: params[:inbox_id]).last
+
+      if(!@contact_inbox)
+        @contact_inbox = ContactInboxBuilder.new(
+          contact: @contact,
+          inbox: @inbox
+        ).perform
+      end
+
+      @conversation = ConversationBuilder.new(
+        params: ActionController::Parameters.new(
+          { account_id: @inbox.account_id,
+            inbox_id: @inbox.id,
+            contact_id: @contact_inbox.contact_id,
+            status: 'open',
+          }), contact_inbox: @contact_inbox).perform
+    else
+      @conversation = @contact.conversations.where(inbox_id: params[:inbox_id]).last
+    end
+
+    render json: {'contact_id':@contact.id, 'conversation_id': @conversation.id};
   end
 
   def show; end
