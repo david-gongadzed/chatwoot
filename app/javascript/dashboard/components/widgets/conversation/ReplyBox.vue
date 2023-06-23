@@ -25,6 +25,7 @@
 
     <banner
       v-if="showSelfAssignBanner"
+      action-button-variant="link"
       color-scheme="secondary"
       :banner-message="$t('CONVERSATION.NOT_ASSIGNED_TO_YOU')"
       :has-action-button="true"
@@ -527,7 +528,7 @@ export default {
       return `draft-${this.conversationIdByRoute}-${this.replyType}`;
     },
     audioRecordFormat() {
-      if (this.isAWhatsAppChannel) {
+      if (this.isAWhatsAppChannel || this.isAPIInbox) {
         return AUDIO_FORMATS.OGG;
       }
       return AUDIO_FORMATS.WAV;

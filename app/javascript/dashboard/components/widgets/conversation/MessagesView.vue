@@ -36,6 +36,7 @@
         v-for="message in getReadMessages"
         :key="message.id"
         class="message--read ph-no-capture"
+        data-clarity-mask="True"
         :data="message"
         :is-a-tweet="isATweet"
         :is-a-whatsapp-channel="isAWhatsAppChannel"
@@ -57,6 +58,7 @@
         v-for="message in getUnReadMessages"
         :key="message.id"
         class="message--unread ph-no-capture"
+        data-clarity-mask="True"
         :data="message"
         :is-a-tweet="isATweet"
         :is-a-whatsapp-channel="isAWhatsAppChannel"
@@ -279,6 +281,7 @@ export default {
       if (newChat.id === oldChat.id) {
         return;
       }
+      this.fetchAllAttachmentsFromCurrentChat();
       this.selectedTweetId = null;
     },
   },
@@ -290,6 +293,7 @@ export default {
 
   mounted() {
     this.addScrollListener();
+    this.fetchAllAttachmentsFromCurrentChat();
   },
 
   beforeDestroy() {
@@ -298,6 +302,9 @@ export default {
   },
 
   methods: {
+    fetchAllAttachmentsFromCurrentChat() {
+      this.$store.dispatch('fetchAllAttachments', this.currentChat.id);
+    },
     removeBusListeners() {
       bus.$off(BUS_EVENTS.SCROLL_TO_MESSAGE, this.onScrollToMessage);
       bus.$off(BUS_EVENTS.SET_TWEET_REPLY, this.setSelectedTweet);
