@@ -43,6 +43,7 @@ import teamMembers from './modules/teamMembers';
 import teams from './modules/teams';
 import userNotificationSettings from './modules/userNotificationSettings';
 import webhooks from './modules/webhooks';
+import draftMessages from './modules/draftMessages';
 
 import LogRocket from 'logrocket';
 import createPlugin from 'logrocket-vuex';
@@ -51,7 +52,8 @@ const plugins = [];
 
 if (window.logRocketProjectId) {
   LogRocket.init(window.logRocketProjectId);
-  const logRocketPlugin = createPlugin(LogRocket, function(mutation) {
+  // eslint-disable-next-line func-names
+  const logRocketPlugin = createPlugin(LogRocket, function (mutation) {
     const eventsToIgnore = ['SET_CURRENT_USER', 'AUTHENTICATE', 'CLEAR_USER'];
     if (eventsToIgnore.includes(mutation.type)) {
       return null;
@@ -108,6 +110,7 @@ export default new Vuex.Store({
     teams,
     userNotificationSettings,
     webhooks,
+    draftMessages,
   },
   plugins,
 });
