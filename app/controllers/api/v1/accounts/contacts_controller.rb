@@ -56,7 +56,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
                   .get_available_contact_ids(Current.account.id))
     @contacts_count = contacts.count
     @contacts = contacts.page(@current_page)
-    end
+  end
 
   def manage
     @contact = Current.account.contacts.new(permitted_params.except(:avatar_url))
@@ -134,7 +134,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
       #   end
       # end
 
-      process_avatar
+      process_avatar_from_url
     end
   end
 
@@ -153,7 +153,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
       end
     end
 
-    process_avatar if permitted_params[:avatar].present? || permitted_params[:avatar_url].present?
+    process_avatar_from_url if permitted_params[:avatar].present? || permitted_params[:avatar_url].present?
   end
 
   def destroy
@@ -249,7 +249,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
 
   end
 
-  def process_avatar
+  def process_avatar_from_url
     ::Avatar::AvatarFromUrlJob.perform_later(@contact, params[:avatar_url]) if params[:avatar_url].present?
   end
 
