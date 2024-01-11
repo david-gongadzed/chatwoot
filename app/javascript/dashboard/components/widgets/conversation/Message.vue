@@ -16,30 +16,33 @@
         :class="bubbleClass"
         @contextmenu="openContextMenu($event)"
       >
-          <div @click="goToMessage(data.replied_message.id)" v-if="this.data.replied_message" style="width: 100%;min-height: 52px;overflow: hidden;background: #dceaf5;color: black;padding: 8px;border-radius: 10px;margin-bottom: 10px;text-align: left;text-overflow: ellipsis;display: flex;align-items: center;cursor: pointer">
-              <span v-if="this.data.replied_message.content">
-                  {{this.data.replied_message.content.substring(0,100)}}
-              </span>
-              <span v-if="!this.data.replied_message.content" style="display: flex;align-items: center;">
-                  <fluent-icon icon="document" size="28" />File
-              </span>
-          </div>
+<!--          <div @click="goToMessage(data.replied_message.id)" v-if="this.data.replied_message" style="width: 100%;min-height: 52px;overflow: hidden;background: #dceaf5;color: black;padding: 8px;border-radius: 10px;margin-bottom: 10px;text-align: left;text-overflow: ellipsis;display: flex;align-items: center;cursor: pointer">-->
+<!--              <span v-if="this.data.replied_message.content">-->
+<!--                  {{this.data.replied_message.content.substring(0,100)}}-->
+<!--              </span>-->
+<!--              <span v-if="!this.data.replied_message.content" style="display: flex;align-items: center;">-->
+<!--                  <fluent-icon icon="document" size="28" />File-->
+<!--              </span>-->
+<!--          </div>-->
         <bubble-mail-head
           :email-attributes="contentAttributes.email"
           :cc="emailHeadAttributes.cc"
           :bcc="emailHeadAttributes.bcc"
           :is-incoming="isIncoming"
         />
-        <div class="emoji-reaction">
+        <div v-if="this.contentAttributes.test" class="emoji-reaction">
             {{this.contentAttributes.test}}
         </div>
         <instagram-story-reply v-if="storyUrl" :story-url="storyUrl" />
+
+        <a @click="goToMessage(data.replied_message.id)">
         <bubble-reply-to
           v-if="inReplyToMessageId && inboxSupportsReplyTo.incoming"
           :message="inReplyTo"
           :message-type="data.message_type"
           :parent-has-attachments="hasAttachments"
         />
+        </a>
         <bubble-text
           v-if="data.content"
           :message="message"

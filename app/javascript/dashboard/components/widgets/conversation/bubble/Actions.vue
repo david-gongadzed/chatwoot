@@ -24,6 +24,13 @@
         size="14"
       />
     </span>
+    <span v-if="'progress' == messageStatus" class="read-indicator-wrap">
+      <fluent-icon
+              icon="clock"
+              class="action--icon"
+              size="14"
+      />
+    </span>
     <span v-if="showReadIndicator" class="read-indicator-wrap">
       <fluent-icon
         v-tooltip.top-start="$t('CHAT_LIST.MESSAGE_READ')"
@@ -204,6 +211,10 @@ export default {
         return !!this.sourceId;
       }
 
+      if (this.channelType == "Channel::Api") {
+          return this.isSent;
+      }
+
       if (
         this.isAWhatsAppChannel ||
         this.isATwilioChannel ||
@@ -212,10 +223,6 @@ export default {
         this.isATelegramChannel
       ) {
         return this.sourceId && this.isSent;
-      }
-
-      if (this.channelType == "Channel::Api") {
-          return this.isSent;
       }
 
       // All messages will be mark as sent for the Line channel, as there is no source ID.
@@ -229,6 +236,11 @@ export default {
       if (!this.showStatusIndicators) {
         return false;
       }
+
+      if (this.channelType == "Channel::Api") {
+          return this.isDelivered;
+      }
+
       if (
         this.isAWhatsAppChannel ||
         this.isATwilioChannel ||
@@ -245,26 +257,23 @@ export default {
         return this.isDelivered;
       }
 
-      if (this.channelType == "Channel::Api") {
-        return this.isDelivered;
-      }
-
       return false;
     },
     showReadIndicator() {
       if (!this.showStatusIndicators) {
         return false;
       }
+
+      if (this.channelType == "Channel::Api") {
+          return this.isRead;
+      }
+
       if (
         this.isAWhatsAppChannel ||
         this.isATwilioChannel ||
         this.isAFacebookInbox
       ) {
         return this.sourceId && this.isRead;
-      }
-
-      if (this.channelType == "Channel::Api") {
-          return this.isRead;
       }
 
       if (this.isAWebWidgetInbox || this.isAPIInbox) {

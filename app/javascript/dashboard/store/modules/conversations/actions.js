@@ -264,14 +264,25 @@ const actions = {
       const response = hasMessageFailedWithExternalError(pendingMessage)
         ? await MessageApi.retry(conversationId, id)
         : await MessageApi.create(pendingMessage);
-      commit(types.ADD_MESSAGE, {
-        ...response.data,
-        status: MESSAGE_STATUS.SENT,
-      });
-      commit(types.ADD_CONVERSATION_ATTACHMENTS, {
-        ...response.data,
-        status: MESSAGE_STATUS.SENT,
-      });
+      if(pendingMessage.inboxBadge == "Channel::Api") {
+        commit(types.ADD_MESSAGE, {
+          ...response.data,
+          status: MESSAGE_STATUS.PROGRESS,
+        });
+        commit(types.ADD_CONVERSATION_ATTACHMENTS, {
+          ...response.data,
+          status: MESSAGE_STATUS.PROGRESS,
+        });
+      } else {
+        commit(types.ADD_MESSAGE, {
+          ...response.data,
+          status: MESSAGE_STATUS.SENT,
+        });
+        commit(types.ADD_CONVERSATION_ATTACHMENTS, {
+          ...response.data,
+          status: MESSAGE_STATUS.SENT,
+        });
+      }
     } catch (error) {
       const errorMessage = error.response
         ? error.response.data.error

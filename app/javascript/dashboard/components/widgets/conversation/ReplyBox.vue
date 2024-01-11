@@ -872,6 +872,7 @@ export default {
       }
     },
     async sendMessage(messagePayload) {
+      messagePayload.inboxBadge = this.inboxBadge;
       try {
         await this.$store.dispatch(
           'createPendingMessageAndSend',
