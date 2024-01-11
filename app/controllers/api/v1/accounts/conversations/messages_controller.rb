@@ -4,6 +4,12 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
   end
 
   def create
+    if(@conversation.contact.phone_number && @conversation.inbox.channel_type == 'Channel::Api')
+      if(!@conversation.contact.custom_attributes["whatsapp"].present?)
+        ::Conversations::CheckWhatsappJob.perform_later(@conversation.contact)
+      end
+    end
+
     user = Current.user || @resource
     mb = Messages::MessageBuilder.new(user, @conversation, params)
     @message = mb.perform

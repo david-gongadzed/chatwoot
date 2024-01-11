@@ -236,16 +236,11 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
   def fetch_contact
     @contact = Current.account.contacts.includes(contact_inboxes: [:inbox]).find(params[:id])
 
-    # if(@contact.phone_number)
-    #   if(!@contact.custom_attributes["whatsapp"].present?)
-    #     require 'net/http'
-    #     result = Net::HTTP.get(URI.parse('http://95.179.151.239/check/'+@contact.phone_number))
-    #
-    #     if(result == "1")
-    #       @contact.update(custom_attributes: @contact.custom_attributes.merge({"whatsapp": "1"}))
-    #     end
-    #   end
-    # end
+    if(@contact.phone_number)
+      if(!@contact.custom_attributes["whatsapp"].present?)
+        ::Conversations::CheckWhatsappJob.perform_later(@contact)
+      end
+    end
 
   end
 
