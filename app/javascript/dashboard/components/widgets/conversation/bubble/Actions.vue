@@ -8,6 +8,7 @@
       }"
     >
       {{ readableTime }}
+
     </span>
       <span class="read-indicator-wrap delete-icon" style="display: none">
       <fluent-icon
