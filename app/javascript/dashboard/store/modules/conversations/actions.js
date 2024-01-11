@@ -264,7 +264,7 @@ const actions = {
       const response = hasMessageFailedWithExternalError(pendingMessage)
         ? await MessageApi.retry(conversationId, id)
         : await MessageApi.create(pendingMessage);
-      if(pendingMessage.inboxBadge == "Channel::Api") {
+      if(pendingMessage.inboxBadge == "Channel::Api" && pendingMessage.message_type === MESSAGE_TYPE.OUTGOING) {
         commit(types.ADD_MESSAGE, {
           ...response.data,
           status: MESSAGE_STATUS.PROGRESS,

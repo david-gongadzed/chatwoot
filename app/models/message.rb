@@ -241,7 +241,7 @@ class Message < ApplicationRecord
 
     message_content = text_content_quoted || html_content_quoted || content
     self.processed_message_content = message_content&.truncate(150_000)
-    if(self.id == nil && conversation.inbox.channel_type == 'Channel::Api')
+    if(self.outgoing? && self.id == nil && conversation.inbox.channel_type == 'Channel::Api')
       self.status = :progress
     end
   end
