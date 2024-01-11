@@ -66,7 +66,7 @@ class Api::V1::Accounts::ContactsController < Api::V1::Accounts::BaseController
         @contact = Current.account.contacts.new(permitted_params.except(:avatar_url))
         @contact.save!
         @contact_inbox = build_contact_inbox
-        process_avatar
+        process_avatar_from_url
       end
     end
 
