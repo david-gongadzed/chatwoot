@@ -130,7 +130,7 @@
            variant="clear"
            icon="arrow-reply"
            size="medium"
-           @click="replyMessage"
+           @click="handleReplyTo"
         />
     </div>
     <div v-if="shouldShowContextMenu" class="context-menu-wrap">
