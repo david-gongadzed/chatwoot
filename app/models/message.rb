@@ -92,7 +92,7 @@ class Message < ApplicationRecord
     integrations: 10,
     sticker: 11
   }
-  enum status: { progress: -1,sent: 0, delivered: 1, read: 2, failed: 3 }
+  enum status: { unknown: -1,sent: 0, delivered: 1, read: 2, failed: 3 }
   # [:submitted_email, :items, :submitted_values] : Used for bot message types
   # [:email] : Used by conversation_continuity incoming email messages
   # [:in_reply_to] : Used to reply to a particular tweet in threads
@@ -242,7 +242,7 @@ class Message < ApplicationRecord
     message_content = text_content_quoted || html_content_quoted || content
     self.processed_message_content = message_content&.truncate(150_000)
     if(self.outgoing? && self.id == nil && conversation.inbox.channel_type == 'Channel::Api')
-      self.status = :progress
+      self.status = :unknown
     end
   end
 

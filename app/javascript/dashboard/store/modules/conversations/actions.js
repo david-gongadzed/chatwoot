@@ -267,11 +267,11 @@ const actions = {
       if(pendingMessage.inboxBadge == "Channel::Api" && pendingMessage.message_type === MESSAGE_TYPE.OUTGOING) {
         commit(types.ADD_MESSAGE, {
           ...response.data,
-          status: MESSAGE_STATUS.PROGRESS,
+          status: MESSAGE_STATUS.UNKNOWN,
         });
         commit(types.ADD_CONVERSATION_ATTACHMENTS, {
           ...response.data,
-          status: MESSAGE_STATUS.PROGRESS,
+          status: MESSAGE_STATUS.UNKNOWN,
         });
       } else {
         commit(types.ADD_MESSAGE, {

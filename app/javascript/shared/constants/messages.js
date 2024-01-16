@@ -4,6 +4,7 @@ export const MESSAGE_STATUS = {
   DELIVERED: 'delivered',
   READ: 'read',
   PROGRESS: 'progress',
+  UNKNOWN: 'unknown',
 };
 
 export const MESSAGE_TYPE = {
