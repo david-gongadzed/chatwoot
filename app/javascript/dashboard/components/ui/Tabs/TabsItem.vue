@@ -9,7 +9,7 @@
       <span v-if="name != 'Unassigned' && name != 'Mine'">{{ name }}</span>
       <span v-if="name == 'Unassigned'">New Booking</span>
       <span v-if="name == 'Mine'">{{$parent.$parent.$parent.currentUser.available_name}}</span>
-      <div v-if="showBadge" class="badge">
+      <div v-if="showBadge" class="badge min-w-[20px]">
         <span>
           {{ getItemCount }}
         </span>
