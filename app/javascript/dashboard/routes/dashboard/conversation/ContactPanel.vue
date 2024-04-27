@@ -87,10 +87,7 @@
                 attribute-type="contact_attribute"
                 attribute-class="conversation--attribute"
                 class="even"
-                :contact-id="contact.id"
-              />
-              <custom-attribute-selector
-                attribute-type="contact_attribute"
+                attribute-from="conversation_contact_panel"
                 :contact-id="contact.id"
               />
             </accordion-item>
@@ -156,7 +153,6 @@ import ConversationParticipant from './ConversationParticipant.vue';
 import ContactInfo from './contact/ContactInfo.vue';
 import ConversationInfo from './ConversationInfo.vue';
 import CustomAttributes from './customAttributes/CustomAttributes.vue';
-import CustomAttributeSelector from './customAttributes/CustomAttributeSelector.vue';
 import draggable from 'vuedraggable';
 import uiSettingsMixin from 'dashboard/mixins/uiSettings';
 import MacrosList from './Macros/List.vue';
@@ -169,7 +165,6 @@ export default {
     ContactInfo,
     ConversationInfo,
     CustomAttributes,
-    CustomAttributeSelector,
     ConversationAction,
     ConversationParticipant,
     draggable,
