@@ -554,7 +554,7 @@ export default {
           console.log(this);
           let matchs = await this.data.content.match(/\bhttps?:\/\/\S+/gi);
           //console.log(matchs[0].substr(0,matchs[0].length - 1));
-          let txt =  await this.getPlainText(this.data.content).replace(/\[.*]/g,"").trim().replace(this.getPlainText(this.data.content).substr(this.getPlainText(this.data.content).indexOf("Have")),"");
+          let txt =  await this.getPlainText(this.data.content).replace(/\[.*]/g,"").trim().replace(this.getPlainText(this.data.content).substr(this.getPlainText(this.data.content).indexOf("Have")).trim(),"").trim();
 
           await copyTextToClipboard(txt.replace(/https.*wa\.me.*/g,"").replace(/https.*t\.me.*/g,"").replace("https","\nhttps"));
 
