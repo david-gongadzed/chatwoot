@@ -103,7 +103,8 @@ class Notification < ApplicationRecord
     }
 
     i18n_key = notification_title_map[notification_type]
-    return '' unless i18n_key
+    return push_message_body
+    # return '' unless i18n_key
 
     if notification_type == 'conversation_creation'
       I18n.t(i18n_key, display_id: conversation.display_id, inbox_name: primary_actor.inbox.name)
