@@ -557,6 +557,7 @@ export default {
           let txt =  await this.getPlainText(this.data.content).replace(this.getPlainText(this.data.content).substr(this.getPlainText(this.data.content).indexOf("Have")),"");
 
           await copyTextToClipboard(txt.replace(/https.*wa\.me.*/g,"").replace("https","\nhttps"));
+
           this.showAlert(this.$t('CONTACT_PANEL.COPY_SUCCESSFUL'));
     },
     async retrySendMessage() {
