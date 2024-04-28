@@ -553,8 +553,8 @@ export default {
     async handleCopy() {
           console.log(this);
           let matchs = await this.data.content.match(/\bhttps?:\/\/\S+/gi);
-          console.log(matchs[0].substr(0,matchs[0].length - 1));
-          let txt =  await this.getPlainText(this.data.content).replace(this.getPlainText(this.data.content).substr(this.getPlainText(this.data.content).indexOf("Have")),"");
+          //console.log(matchs[0].substr(0,matchs[0].length - 1));
+          let txt =  await this.getPlainText(this.data.content).replace(/\[.*]/g,"").trim().replace(this.getPlainText(this.data.content).substr(this.getPlainText(this.data.content).indexOf("Have")),"");
 
           await copyTextToClipboard(txt.replace(/https.*wa\.me.*/g,"").replace("https","\nhttps"));
 
@@ -593,7 +593,7 @@ export default {
       this.contextMenuPosition = { x: null, y: null };
     },
     isBookingEmail() {
-      if(this.data.content_type != "incoming_email" || !this.isIncoming || this.getPlainText(this.data.content).substr(0,11) != 'Hello Team,')
+      if(this.data.content_type != "incoming_email" || !this.isIncoming || this.getPlainText(this.data.content).replace(/\[.*]/g,"").trim().substr(0,11) != 'Hello Team,')
         return false;
       return true;
     },
