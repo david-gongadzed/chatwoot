@@ -147,6 +147,12 @@
            @click="handleReplyTo"
         />
     </div>
+      <woot-button v-if="!isMessageDeleted && isBubble && !isPrivate && isBookingEmail()"
+                   variant="clear"
+                   icon="copy"
+                   size="medium"
+                   @click="handleCopy"
+      />
     <div v-if="shouldShowContextMenu" class="context-menu-wrap">
       <context-menu
         v-if="isBubble && !isMessageDeleted"
@@ -185,6 +191,7 @@ import { ACCOUNT_EVENTS } from 'dashboard/helper/AnalyticsHelper/events';
 import { LOCAL_STORAGE_KEYS } from 'dashboard/constants/localStorage';
 import { LocalStorage } from 'shared/helpers/localStorage';
 import { getDayDifferenceFromNow } from 'shared/helpers/DateHelper';
+import { copyTextToClipboard } from 'shared/helpers/clipboard';
 
 export default {
   components: {
@@ -543,6 +550,15 @@ export default {
     handleContextMenuClick() {
       this.showContextMenu = !this.showContextMenu;
     },
+    async handleCopy() {
+          console.log(this);
+          let matchs = await this.data.content.match(/\bhttps?:\/\/\S+/gi);
+          console.log(matchs[0].substr(0,matchs[0].length - 1));
+          let txt =  await this.getPlainText(this.data.content).replace(this.getPlainText(this.data.content).substr(this.getPlainText(this.data.content).indexOf("Have")),"");
+
+          await copyTextToClipboard(txt.replace(/https.*wa\.me.*/g,"").replace("https","\nhttps"));
+          this.showAlert(this.$t('CONTACT_PANEL.COPY_SUCCESSFUL'));
+    },
     async retrySendMessage() {
       await this.$store.dispatch('sendMessageWithData', this.data);
     },
@@ -574,6 +590,11 @@ export default {
     closeContextMenu() {
       this.showContextMenu = false;
       this.contextMenuPosition = { x: null, y: null };
+    },
+    isBookingEmail() {
+      if(this.data.content_type != "incoming_email" || !this.isIncoming || this.getPlainText(this.data.content).substr(0,11) != 'Hello Team,')
+        return false;
+      return true;
     },
     handleReplyTo() {
       const replyStorageKey = LOCAL_STORAGE_KEYS.MESSAGE_REPLY_TO;
