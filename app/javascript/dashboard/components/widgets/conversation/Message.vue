@@ -556,7 +556,7 @@ export default {
           //console.log(matchs[0].substr(0,matchs[0].length - 1));
           let txt =  await this.getPlainText(this.data.content).replace(/\[.*]/g,"").trim().replace(this.getPlainText(this.data.content).substr(this.getPlainText(this.data.content).indexOf("Have")),"");
 
-          await copyTextToClipboard(txt.replace(/https.*wa\.me.*/g,"").replace("https","\nhttps"));
+          await copyTextToClipboard(txt.replace(/https.*wa\.me.*/g,"").replace(/https.*t\.me.*/g,"").replace("https","\nhttps"));
 
           this.showAlert(this.$t('CONTACT_PANEL.COPY_SUCCESSFUL'));
     },
