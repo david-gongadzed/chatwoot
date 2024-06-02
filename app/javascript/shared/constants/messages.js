@@ -99,6 +99,7 @@ export const CSAT_RATINGS = [
 export const AUDIO_FORMATS = {
   WEBM: 'audio/webm',
   OGG: 'audio/ogg',
+  MP3: 'audio/mp3',
   WAV: 'audio/wav',
 };
 
