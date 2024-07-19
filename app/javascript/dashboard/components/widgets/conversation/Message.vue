@@ -589,7 +589,6 @@ export default {
     },
     replyMessage() {
       this.chat.reply_message = this.data;
-
     },
     onMediaLoadError() {
       this.hasMediaLoadError = true;
