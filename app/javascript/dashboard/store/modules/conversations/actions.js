@@ -37,9 +37,10 @@ const actions = {
     }
   },
 
-  fetchAllConversations: async ({ commit, dispatch }, params) => {
+  fetchAllConversations: async ({ commit, state, dispatch }) => {
     commit(types.SET_LIST_LOADING_STATUS);
     try {
+      const params = state.conversationFilters;
       const {
         data: { data },
       } = await ConversationApi.get(params);
@@ -457,6 +458,14 @@ const actions = {
     commit(types.CLEAR_CONVERSATION_FILTERS);
   },
 
+  setChatListFilters({ commit }, data) {
+    commit(types.SET_CHAT_LIST_FILTERS, data);
+  },
+
+  updateChatListFilters({ commit }, data) {
+    commit(types.UPDATE_CHAT_LIST_FILTERS, data);
+  },
+
   assignPriority: async ({ dispatch }, { conversationId, priority }) => {
     try {
       await ConversationApi.togglePriority({
@@ -475,6 +484,10 @@ const actions = {
 
   setCurrentChatPriority({ commit }, { priority, conversationId }) {
     commit(types.ASSIGN_PRIORITY, { priority, conversationId });
+  },
+
+  setContextMenuChatId({ commit }, chatId) {
+    commit(types.SET_CONTEXT_MENU_CHAT_ID, chatId);
   },
 
   ...messageReadActions,

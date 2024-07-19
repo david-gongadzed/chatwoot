@@ -64,6 +64,7 @@ const runSDK = ({ baseUrl, websiteToken, pageTitle }) => {
     mobile: chatwootSettings.mobile?chatwootSettings.mobile:'button',
     launcherTitle: chatwootSettings.launcherTitle || '',
     showPopoutButton: chatwootSettings.showPopoutButton || false,
+    showUnreadMessagesDialog: chatwootSettings.showUnreadMessagesDialog ?? true,
     widgetStyle: getWidgetStyle(chatwootSettings.widgetStyle) || 'standard',
     resetTriggered: false,
     darkMode: getDarkMode(chatwootSettings.darkMode),
