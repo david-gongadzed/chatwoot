@@ -63,7 +63,6 @@ export default createStore({
     cannedResponse,
     categories,
     contactConversations,
-    privateNotes,
     contactLabels,
     contactNotes,
     contacts,
