@@ -448,6 +448,7 @@ export default {
       this.contextMenuPosition = { x: null, y: null };
     },
     isBookingEmail() {
+        return false;
       if(this.data.content_type != "incoming_email" || !this.isIncoming || this.getPlainText(this.data.content).replace(/\[.*]/g,"").trim().substr(0,11) != 'Hello Team,')
         return false;
       return true;
