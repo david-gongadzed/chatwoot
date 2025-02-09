@@ -31,7 +31,8 @@ RUN apk update && apk add --no-cache \
   && gem install bundler
 
 # Install pnpm and configure environment
-RUN wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - \
+RUN echo 'export PNPM_VERSION=9' >> /root/.shrc  \
+    && wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - \
     && echo 'export PNPM_HOME="/root/.local/share/pnpm"' >> /root/.shrc \
     && echo 'export PATH="$PNPM_HOME:$PATH"' >> /root/.shrc \
     && export PNPM_HOME="/root/.local/share/pnpm" \
