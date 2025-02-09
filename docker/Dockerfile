@@ -18,20 +18,30 @@ ENV NODE_OPTIONS ${NODE_OPTIONS}
 
 ENV BUNDLE_PATH="/gems"
 
-RUN apk update && apk add --no-cache \
-  openssl \
-  tar \
-  build-base \
-  tzdata \
-  postgresql-dev \
-  postgresql-client \
-  nodejs=20.15.1-r0 \
-  git \
-  && mkdir -p /var/app \
-  && gem install bundler
+RUN echo 'export PNPM_VERSION=9.15.4' >> /root/.shrc  \
+    && wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - \
+    && echo 'export PNPM_HOME="/root/.local/share/pnpm"' >> /root/.shrc \
+    && echo 'export PATH="$PNPM_HOME:$PATH"' >> /root/.shrc \
+    && export PNPM_HOME="/root/.local/share/pnpm" \
+    && export PATH="$PNPM_HOME:$PATH" \
+    && pnpm --version
+
+
+
+#RUN apk update && apk add --no-cache \
+#  openssl \
+#  tar \
+#  build-base \
+#  tzdata \
+#  postgresql-dev \
+#  postgresql-client \
+#  nodejs=20.15.1-r0 \
+#  git \
+#  && mkdir -p /var/app \
+#  && gem install bundler
 
 # Install pnpm and configure environment
-RUN echo 'export PNPM_VERSION=9' >> /root/.shrc  \
+RUN echo 'export PNPM_VERSION=9.15.4' >> /root/.shrc  \
     && wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - \
     && echo 'export PNPM_HOME="/root/.local/share/pnpm"' >> /root/.shrc \
     && echo 'export PATH="$PNPM_HOME:$PATH"' >> /root/.shrc \
