@@ -480,7 +480,7 @@ export default {
   <li
     v-if="shouldRenderMessage"
     :id="`message${data.id}`"
-    class="group"
+    class="group/context-menu"
     :class="[alignBubble]"
   >
     <div :class="wrapClass">
@@ -609,24 +609,24 @@ export default {
         </a>
       </div>
     </div>
-    <div class="reply-button">
-        <woot-button v-if="!isMessageDeleted && isBubble && !isPrivate"
-           variant="clear"
-           icon="arrow-reply"
-           size="medium"
-           @click="handleReplyTo"
-        />
-    </div>
+
+      <div class="reply-button">
+          <woot-button v-if="!isMessageDeleted && isBubble && !isPrivate"
+                       variant="clear"
+                       icon="arrow-reply"
+                       size="medium"
+                       @click="handleReplyTo"
+          />
+      </div>
+
       <woot-button v-if="!isMessageDeleted && isBubble && !isPrivate && isBookingEmail()"
                    variant="clear"
                    icon="copy"
                    size="medium"
                    @click="handleCopy"
       />
-    <div
-      v-if="shouldShowContextMenu"
-      class="invisible context-menu-wrap group-hover:visible"
-    >
+
+    <div v-if="shouldShowContextMenu" class="context-menu-wrap">
       <ContextMenu
         v-if="isBubble && !isMessageDeleted"
         :context-menu-position="contextMenuPosition"
