@@ -26,6 +26,7 @@ RUN apk update && apk add --no-cache \
   postgresql-dev \
   postgresql-client \
   nodejs=20.15.1-r0 \
+  npm \
   git \
   && mkdir -p /var/app \
   && gem install bundler
