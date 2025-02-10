@@ -34,12 +34,12 @@ jobs:
         run: |
           # Replace forward slashes with hyphens in the ref name
           SANITIZED_REF=$(echo "$GIT_REF" | sed 's/\//-/g')
-          echo "DOCKER_TAG=chatwoot/chatwoot:$SANITIZED_REF" >> $GITHUB_ENV
+          echo "DOCKER_TAG=gongadze/chatwoot:$SANITIZED_REF" >> $GITHUB_ENV
 
       - name: replace docker tag if master
         if: github.ref_name == 'master'
         run: |
-          echo "DOCKER_TAG=chatwoot/chatwoot:latest" >> $GITHUB_ENV
+          echo "DOCKER_TAG=gongadze/chatwoot:latest" >> $GITHUB_ENV
 
       - name: Login to DockerHub
         if: github.event_name == 'push' || github.event_name == 'workflow_dispatch'
