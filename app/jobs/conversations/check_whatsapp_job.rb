@@ -3,7 +3,7 @@ class Conversations::CheckWhatsappJob < ApplicationJob
 
   def perform(contact)
     require 'net/http'
-    result = Net::HTTP.get(URI.parse('http://95.179.151.239/check/'+contact.phone_number))
+    result = Net::HTTP.get(URI.parse('https://penguin.thenoisyplace.com/check/'+contact.phone_number))
 
     if(result == "1")
       contact.update(custom_attributes: contact.custom_attributes.merge({"whatsapp": "1"}))
