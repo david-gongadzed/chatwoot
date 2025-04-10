@@ -45,6 +45,7 @@ json.snoozed_until conversation.snoozed_until
 json.status conversation.status
 json.reply_message nil
 json.created_at conversation.created_at.to_i
+json.updated_at conversation.updated_at.to_f
 json.timestamp conversation.last_activity_at.to_i
 json.first_reply_created_at conversation.first_reply_created_at.to_i
 json.unread_count conversation.unread_incoming_messages.count

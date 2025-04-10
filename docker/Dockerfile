@@ -1,5 +1,11 @@
 # pre-build stage
+FROM node:23-alpine as node
 FROM ruby:3.3.3-alpine3.19 AS pre-builder
+
+ARG NODE_VERSION="23.7.0"
+ARG PNPM_VERSION="10.2.0"
+ENV NODE_VERSION=${NODE_VERSION}
+ENV PNPM_VERSION=${PNPM_VERSION}
 
 # ARG default to production settings
 # For development docker-compose file overrides ARGS
@@ -25,12 +31,28 @@ RUN apk update && apk add --no-cache \
   tzdata \
   postgresql-dev \
   postgresql-client \
-  nodejs=20.15.1-r0 \
-  npm \
   git \
+  curl \
+  xz \
   && mkdir -p /var/app \
-  && gem install bundler  \
-  && npm install -g pnpm@latest-9
+  && gem install bundler
+
+COPY --from=node /usr/local/bin/node /usr/local/bin/
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+RUN ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+  && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx
+
+RUN npm install -g pnpm@${PNPM_VERSION}
+
+RUN echo 'export PNPM_HOME="/root/.local/share/pnpm"' >> /root/.shrc \
+  && echo 'export PATH="$PNPM_HOME:$PATH"' >> /root/.shrc \
+  && export PNPM_HOME="/root/.local/share/pnpm" \
+  && export PATH="$PNPM_HOME:$PATH" \
+  && pnpm --version
+
+# Persist the environment variables in Docker
+ENV PNPM_HOME="/root/.local/share/pnpm"
+ENV PATH="$PNPM_HOME:$PATH"
 
 WORKDIR /app
 
@@ -44,7 +66,10 @@ RUN apk update && apk add --no-cache build-base musl ruby-full ruby-dev gcc make
 RUN bundle config set --local force_ruby_platform true
 
 # Do not install development or test gems in production
-RUN bundle config set without 'development test'; bundle install -j 4 -r 3;
+RUN if [ "$RAILS_ENV" = "production" ]; then \
+  bundle config set without 'development test'; bundle install -j 4 -r 3; \
+  else bundle install -j 4 -r 3; \
+  fi
 
 COPY package.json pnpm-lock.yaml ./
 RUN pnpm i
@@ -73,6 +98,10 @@ RUN rm -rf /gems/ruby/3.3.0/cache/*.gem \
 # final build stage
 FROM ruby:3.3.3-alpine3.19
 
+ARG NODE_VERSION="23.7.0"
+ARG PNPM_VERSION="10.2.0"
+ENV NODE_VERSION=${NODE_VERSION}
+ENV PNPM_VERSION=${PNPM_VERSION}
 
 ARG BUNDLE_WITHOUT="development:test"
 ENV BUNDLE_WITHOUT ${BUNDLE_WITHOUT}
@@ -101,11 +130,14 @@ RUN apk update && apk add --no-cache \
   vips \
   && gem install bundler
 
+COPY --from=node /usr/local/bin/node /usr/local/bin/
+COPY --from=node /usr/local/lib/node_modules /usr/local/lib/node_modules
+
 RUN if [ "$RAILS_ENV" != "production" ]; then \
-  apk add --no-cache nodejs=20.15.1-r0; \
-  # Install pnpm and configure environment
-  wget -qO- https://get.pnpm.io/install.sh | ENV="$HOME/.shrc" SHELL="$(which sh)" sh - \
-  && source /root/.shrc \
+  apk add --no-cache curl \
+  && ln -s /usr/local/lib/node_modules/npm/bin/npm-cli.js /usr/local/bin/npm \
+  && ln -s /usr/local/lib/node_modules/npm/bin/npx-cli.js /usr/local/bin/npx \
+  && npm install -g pnpm@${PNPM_VERSION} \
   && pnpm --version; \
   fi
 
