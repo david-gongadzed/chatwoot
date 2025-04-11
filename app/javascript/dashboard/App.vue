@@ -139,7 +139,7 @@ export default {
     v-if="!authUIFlags.isFetching && !accountUIFlags.isFetchingItem"
     id="app"
     class="flex-grow-0 w-full h-full min-h-0 app-wrapper"
-    :class="{ 'app-rtl--wrapper': isRTL }"
+    :class="{ 'app-rtl--wrapper': isRTL, 'agent': currentUser.role != 'administrator', 'admin': currentUser.role == 'administrator' }"
     :dir="isRTL ? 'rtl' : 'ltr'"
   >
     <UpdateBanner :latest-chatwoot-version="latestChatwootVersion" />
@@ -183,7 +183,7 @@ export default {
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
 <style>
-.agent .tab--chat-type.tabs--container--with-border.tabs--container .tabs-title:not(.is-active) {
+.agent .tab--chat-type.tabs--container--with-border.tabs--container .tabs-title:nth-child(3) {
     display:none;
 }
 
