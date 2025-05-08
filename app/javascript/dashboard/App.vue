@@ -183,7 +183,7 @@ export default {
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
 <style>
-.agent .tab--chat-type.tabs--container--with-border.tabs--container .tabs-title:nth-child(3) {
+.agent .tab--chat-type.tabs--container--with-border.tabs--container .tabs-title:nth-child(3),.agent .tab--chat-type.tabs--container--with-border.tabs--container .tabs-title:nth-child(2) {
     display:none;
 }
 
