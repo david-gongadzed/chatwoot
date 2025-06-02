@@ -192,7 +192,22 @@ export const mutations = {
     if (pendingMessageIndex !== -1) {
       chat.messages[pendingMessageIndex] = message;
     } else {
-      chat.messages.push(message);
+    // Insert message in correct chronological position based on created_at
+    const newMessageTime = new Date(message.created_at).getTime();
+    let insertIndex = chat.messages.length; // Default to end
+
+    // Find the correct position to insert the message
+    for (let i = 0; i < chat.messages.length; i++) {
+      const currentMessageTime = new Date(chat.messages[i].created_at).getTime();
+      if (newMessageTime < currentMessageTime) {
+        insertIndex = i;
+        break;
+      }
+    }
+
+    // Insert the message at the correct position
+    chat.messages.splice(insertIndex, 0, message);
+
       chat.timestamp = message.created_at;
       const { conversation: { unread_count: unreadCount = 0 } = {} } = message;
       chat.unread_count = unreadCount;

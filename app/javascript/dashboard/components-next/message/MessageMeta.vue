@@ -113,6 +113,9 @@ const isRead = computed(() => {
 });
 
 const statusToShow = computed(() => {
+    if(isAPIInbox.value) {
+        return  status.value;
+    }
   if (isRead.value) return MESSAGE_STATUS.READ;
   if (isDelivered.value) return MESSAGE_STATUS.DELIVERED;
   if (isSent.value) return MESSAGE_STATUS.SENT;

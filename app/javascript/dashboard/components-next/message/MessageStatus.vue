@@ -3,8 +3,24 @@ import { computed, ref } from 'vue';
 import { useIntervalFn } from '@vueuse/core';
 import { useI18n } from 'vue-i18n';
 import { MESSAGE_STATUS } from './constants';
+import { useInbox } from 'dashboard/composables/useInbox';
+import { useMessageContext } from './provider.js';
+
 
 import Icon from 'next/icon/Icon.vue';
+
+const {
+    isAFacebookInbox,
+    isALineChannel,
+    isAPIInbox,
+    isASmsInbox,
+    isATelegramChannel,
+    isATwilioChannel,
+    isAWebWidgetInbox,
+    isAWhatsAppChannel,
+    isAnEmailChannel,
+    isAInstagramChannel,
+} = useInbox();
 
 const { status } = defineProps({
   status: {
@@ -66,6 +82,7 @@ const statusColor = computed(() => {
 
 const tooltipText = computed(() => {
   const statusTextMap = {
+    [MESSAGE_STATUS.UNKNOWN]: t('CHAT_LIST.SENDING'),
     [MESSAGE_STATUS.SENT]: t('CHAT_LIST.SENT'),
     [MESSAGE_STATUS.DELIVERED]: t('CHAT_LIST.DELIVERED'),
     [MESSAGE_STATUS.READ]: t('CHAT_LIST.MESSAGE_READ'),
@@ -77,8 +94,14 @@ const tooltipText = computed(() => {
 </script>
 
 <template>
-  <Icon
-    v-if="status === MESSAGE_STATUS.PROGRESS"
+    <Icon
+    v-if="isAPIInbox && status === MESSAGE_STATUS.UNKNOWN"
+    v-tooltip.top-start="tooltipText"
+    :icon="progessIcon"
+    class="text-n-slate-10"
+    />
+    <Icon
+    v-if="!isAPIInbox && status === MESSAGE_STATUS.PROGRESS"
     v-tooltip.top-start="tooltipText"
     :icon="progessIcon"
     class="text-n-slate-10"

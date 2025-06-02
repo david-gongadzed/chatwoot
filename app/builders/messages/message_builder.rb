@@ -10,6 +10,7 @@ class Messages::MessageBuilder
     @message_type = params[:message_type] || 'outgoing'
     @attachments = params[:attachments]
     @automation_rule = content_attributes&.dig(:automation_rule_id)
+    @custom_created_at = params[:created_at] # Add this line
     return unless params.instance_of?(ActionController::Parameters)
 
     @in_reply_to = content_attributes&.dig(:in_reply_to)
@@ -18,6 +19,12 @@ class Messages::MessageBuilder
 
   def perform
     @message = @conversation.messages.build(message_params)
+
+    # Set custom created_at if provided, before saving
+    if @custom_created_at.present?
+      @message.created_at = @custom_created_at
+    end
+
     process_attachments
     process_emails
     @message.save!

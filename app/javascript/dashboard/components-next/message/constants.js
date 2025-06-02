@@ -30,6 +30,7 @@ export const ORIENTATION = {
 };
 
 export const MESSAGE_STATUS = {
+  UNKNOWN: 'unknown',
   SENT: 'sent',
   DELIVERED: 'delivered',
   READ: 'read',

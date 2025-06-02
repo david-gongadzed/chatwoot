@@ -4,6 +4,7 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
   end
 
   def create
+
     if(@conversation.contact.phone_number && @conversation.inbox.channel_type == 'Channel::Api')
       if(!@conversation.contact.custom_attributes["whatsapp"].present?)
         ::Conversations::CheckWhatsappJob.perform_later(@conversation.contact)
@@ -11,8 +12,16 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
     end
 
     user = Current.user || @resource
-    mb = Messages::MessageBuilder.new(user, @conversation, params)
+
+    builder_params = params.dup
+    if permitted_params[:created_at].present?
+      builder_params[:created_at] = permitted_params[:created_at]
+    end
+
+    mb = Messages::MessageBuilder.new(user, @conversation, builder_params)
     @message = mb.perform
+
+
   rescue StandardError => e
     render_could_not_create_error(e.message)
   end
@@ -75,7 +84,7 @@ class Api::V1::Accounts::Conversations::MessagesController < Api::V1::Accounts::
   end
 
   def permitted_params
-    params.permit(:id, :target_language)
+    params.permit(:id, :target_language, :created_at)
   end
 
   def already_translated_content_available?
