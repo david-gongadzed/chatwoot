@@ -62,6 +62,7 @@ useIntervalFn(rotateIcon, 500, {
 
 const statusIcon = computed(() => {
   const statusIconMap = {
+    [MESSAGE_STATUS.UNKNOWN]: '',
     [MESSAGE_STATUS.SENT]: 'i-lucide-check',
     [MESSAGE_STATUS.DELIVERED]: 'i-lucide-check-check',
     [MESSAGE_STATUS.READ]: 'i-lucide-check-check',
@@ -82,7 +83,7 @@ const statusColor = computed(() => {
 
 const tooltipText = computed(() => {
   const statusTextMap = {
-    [MESSAGE_STATUS.UNKNOWN]: t('CHAT_LIST.SENDING'),
+    [MESSAGE_STATUS.UNKNOWN]: t('CHAT_LIST.UNKNOWN'),
     [MESSAGE_STATUS.SENT]: t('CHAT_LIST.SENT'),
     [MESSAGE_STATUS.DELIVERED]: t('CHAT_LIST.DELIVERED'),
     [MESSAGE_STATUS.READ]: t('CHAT_LIST.MESSAGE_READ'),
@@ -94,12 +95,6 @@ const tooltipText = computed(() => {
 </script>
 
 <template>
-    <Icon
-    v-if="isAPIInbox && status === MESSAGE_STATUS.UNKNOWN"
-    v-tooltip.top-start="tooltipText"
-    :icon="progessIcon"
-    class="text-n-slate-10"
-    />
     <Icon
     v-if="!isAPIInbox && status === MESSAGE_STATUS.PROGRESS"
     v-tooltip.top-start="tooltipText"

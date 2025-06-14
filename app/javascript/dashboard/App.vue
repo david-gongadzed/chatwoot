@@ -213,11 +213,11 @@ export default {
 .emoji-reaction {
     position: absolute;
     top: -4px;
-    left: -16px;
+    left: -26px;
     background: #ffffff;
     border: 1px solid #ebf0f5;
     border-radius: 101px;
-    padding: 3px;
+    padding: 0px;
     z-index: 1;
 }
 

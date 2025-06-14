@@ -10,7 +10,7 @@ import { useI18n } from 'vue-i18n';
 import { BUS_EVENTS } from 'shared/constants/busEvents';
 import { MESSAGE_VARIANTS, ORIENTATION } from '../constants';
 
-const { variant, orientation, inReplyTo, shouldGroupWithNext } =
+const { variant, orientation, inReplyTo, shouldGroupWithNext,contentAttributes } =
   useMessageContext();
 const { t } = useI18n();
 
@@ -83,7 +83,7 @@ const replyToPreview = computed(() => {
 
 <template>
   <div
-    class="text-sm"
+    class="relative text-sm"
     :class="[
       messageClass,
       {
@@ -101,6 +101,15 @@ const replyToPreview = computed(() => {
       </span>
     </div>
     <slot />
+      <div
+              v-if="contentAttributes.test"
+              class="emoji-reaction mt-2 flex"
+              :class="orientation === 'right' ? 'justify-end' : 'justify-start'"
+      >
+          <div class="inline-flex items-center px-2 py-1 bg-n-alpha-2 rounded-full text-base">
+              {{ contentAttributes.test }}
+          </div>
+      </div>
     <MessageMeta
       v-if="!shouldGroupWithNext && variant !== MESSAGE_VARIANTS.ACTIVITY"
       :class="[
