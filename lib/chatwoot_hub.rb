@@ -19,9 +19,12 @@ class ChatwootHub
   end
 
   def self.pricing_plan
-    return 'community' unless ChatwootApp.enterprise?
+    return 'enterprise' unless ChatwootApp.enterprise?
 
-    InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN')&.value || 'community'
+    # Check environment variable first, then fallback to database, then default to enterprise
+    ENV.fetch('INSTALLATION_PRICING_PLAN') do
+      InstallationConfig.find_by(name: 'INSTALLATION_PRICING_PLAN')&.value || 'enterprise'
+    end
   end
 
   def self.pricing_plan_quantity
