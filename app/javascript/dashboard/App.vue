@@ -180,7 +180,7 @@ export default {
 <style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
 <style>
-li.flex-shrink-0.my-0.mx-2.ltr\:first\:ml-0.rtl\:first\:mr-0.ltr\:last\:mr-0.rtl\:last\:ml-0.hover\:text-n-slate-12.text-sm.\[\&_a\]\:font-medium:nth-child(3), li.flex-shrink-0.my-0.mx-2.ltr\:first\:ml-0.rtl\:first\:mr-0.ltr\:last\:mr-0.rtl\:last\:ml-0.hover\:text-n-slate-12.text-sm.\[\&_a\]\:font-medium:nth-child(2) {
+.agent li.flex-shrink-0.my-0.mx-2.ltr\:first\:ml-0.rtl\:first\:mr-0.ltr\:last\:mr-0.rtl\:last\:ml-0.hover\:text-n-slate-12.text-sm.\[\&_a\]\:font-medium:nth-child(3), .agent li.flex-shrink-0.my-0.mx-2.ltr\:first\:ml-0.rtl\:first\:mr-0.ltr\:last\:mr-0.rtl\:last\:ml-0.hover\:text-n-slate-12.text-sm.\[\&_a\]\:font-medium:nth-child(2) {
     display:none;
 }
 
