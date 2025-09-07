@@ -22,6 +22,9 @@ ENV RAILS_ENV ${RAILS_ENV}
 ARG NODE_OPTIONS="--max-old-space-size=4096 --openssl-legacy-provider"
 ENV NODE_OPTIONS ${NODE_OPTIONS}
 
+# Set enterprise as default pricing plan
+ENV INSTALLATION_PRICING_PLAN=enterprise
+
 ENV BUNDLE_PATH="/gems"
 
 RUN apk update && apk add --no-cache \
@@ -120,6 +123,9 @@ ENV BUNDLE_FORCE_RUBY_PLATFORM ${BUNDLE_FORCE_RUBY_PLATFORM}
 ARG RAILS_ENV=production
 ENV RAILS_ENV ${RAILS_ENV}
 ENV BUNDLE_PATH="/gems"
+
+# Set enterprise as default pricing plan
+ENV INSTALLATION_PRICING_PLAN=enterprise
 
 RUN apk update && apk add --no-cache \
   build-base \
