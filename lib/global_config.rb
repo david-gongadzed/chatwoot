@@ -51,6 +51,11 @@ class GlobalConfig
     end
 
     def db_fallback(config_key)
+      # Check environment variable first for INSTALLATION_PRICING_PLAN
+      if config_key == 'INSTALLATION_PRICING_PLAN' && ENV['INSTALLATION_PRICING_PLAN'].present?
+        return ENV['INSTALLATION_PRICING_PLAN']
+      end
+      
       InstallationConfig.find_by(name: config_key)&.value
     end
   end

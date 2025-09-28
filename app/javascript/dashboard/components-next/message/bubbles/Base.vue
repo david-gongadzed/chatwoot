@@ -10,7 +10,11 @@ import { useI18n } from 'vue-i18n';
 import { BUS_EVENTS } from 'shared/constants/busEvents';
 import { MESSAGE_VARIANTS, ORIENTATION } from '../constants';
 
-const { variant, orientation, inReplyTo, shouldGroupWithNext,contentAttributes } =
+const props = defineProps({
+  hideMeta: { type: Boolean, default: false },
+});
+
+const { variant, orientation, inReplyTo, shouldGroupWithNext, contentAttributes } =
   useMessageContext();
 const { t } = useI18n();
 
@@ -64,6 +68,13 @@ const scrollToMessage = () => {
   });
 };
 
+const shouldShowMeta = computed(
+  () =>
+    !props.hideMeta &&
+    !shouldGroupWithNext.value &&
+    variant.value !== MESSAGE_VARIANTS.ACTIVITY
+);
+
 const replyToPreview = computed(() => {
   if (!inReplyTo) return '';
 
@@ -93,10 +104,10 @@ const replyToPreview = computed(() => {
   >
     <div
       v-if="inReplyTo"
-      class="bg-n-alpha-black1 rounded-lg p-2 -mx-1 mb-2 cursor-pointer"
+      class="p-2 -mx-1 mb-2 rounded-lg cursor-pointer bg-n-alpha-black1"
       @click="scrollToMessage"
     >
-      <span class="line-clamp-2 break-all">
+      <span class="break-all line-clamp-2">
         {{ replyToPreview }}
       </span>
     </div>
@@ -111,7 +122,7 @@ const replyToPreview = computed(() => {
           </div>
       </div>
     <MessageMeta
-      v-if="!shouldGroupWithNext && variant !== MESSAGE_VARIANTS.ACTIVITY"
+      v-if="shouldShowMeta"
       :class="[
         flexOrientationClass,
         variant === MESSAGE_VARIANTS.EMAIL ? 'px-3 pb-3' : '',
