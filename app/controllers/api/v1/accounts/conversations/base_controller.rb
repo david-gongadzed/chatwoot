@@ -12,6 +12,6 @@ class Api::V1::Accounts::Conversations::BaseController < Api::V1::Accounts::Base
     end
 
     @conversation ||= Current.account.conversations.find_by!(display_id: params[:conversation_id])
-    authorize @conversation.inbox, :show?
+    authorize @conversation, :show?
   end
 end
