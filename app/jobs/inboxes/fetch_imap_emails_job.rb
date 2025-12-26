@@ -9,7 +9,10 @@ class Inboxes::FetchImapEmailsJob < MutexApplicationJob
     key = format(::Redis::Alfred::EMAIL_MESSAGE_MUTEX, inbox_id: channel.inbox.id)
 
     with_lock(key, 5.minutes) do
-      process_email_for_channel(channel, interval)
+      #process_email_for_channel(channel, interval)
+      Timeout.timeout(50) do  # 50 seconds max for entire job
+        process_email_for_channel(channel, interval)
+      end
     end
   rescue *ExceptionList::IMAP_EXCEPTIONS => e
     Rails.logger.error "Authorization error for email channel - #{channel.inbox.id} : #{e.message}"
