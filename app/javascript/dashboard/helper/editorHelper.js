@@ -457,9 +457,17 @@ const createNode = (editorView, nodeType, content) => {
         content,
         state.schema
       );
+      try {
       return new MessageMarkdownTransformer(state.schema).parse(
         sanitizedContent
       );
+      } catch (e) {
+        // eslint-disable-next-line no-console
+        console.warn('Failed to parse canned response markdown:', e);
+        Sentry.captureException(e);
+        // Fallback: return the content as plain text if parsing fails
+        return state.schema.text(sanitizedContent);
+      }
     }
     case 'variable':
       return state.schema.text(`{{${content}}}`);
