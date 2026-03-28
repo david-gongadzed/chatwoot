@@ -131,7 +131,7 @@ export default {
   <div
     v-if="!authUIFlags.isFetching && !accountUIFlags.isFetchingItem"
     id="app"
-    class="flex flex-col w-full h-screen min-h-0"
+    class="flex flex-col w-full h-screen min-h-0 bg-n-background"
     :class="{ 'agent': currentUser.role != 'administrator', 'admin': currentUser.role == 'administrator' }"
     :dir="isRTL ? 'rtl' : 'ltr'"
   >
@@ -165,13 +165,7 @@ export default {
 .v-popper--theme-tooltip .v-popper__arrow-container {
   display: none;
 }
-
-.multiselect__input {
-  margin-bottom: 0px !important;
-}
 </style>
-
-<style src="vue-multiselect/dist/vue-multiselect.css"></style>
 
 <style>
 .agent li.flex-shrink-0.my-0.mx-2.ltr\:first\:ml-0.rtl\:first\:mr-0.ltr\:last\:mr-0.rtl\:last\:ml-0.hover\:text-n-slate-12.text-sm.\[\&_a\]\:font-medium:nth-child(3), .agent li.flex-shrink-0.my-0.mx-2.ltr\:first\:ml-0.rtl\:first\:mr-0.ltr\:last\:mr-0.rtl\:last\:ml-0.hover\:text-n-slate-12.text-sm.\[\&_a\]\:font-medium:nth-child(2) {
